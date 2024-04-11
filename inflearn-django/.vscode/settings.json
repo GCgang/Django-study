@@ -1,0 +1,43 @@
+{
+  "editor.tabSize": 4, // 탭 크기
+  "editor.formatOnSave": true, // 저장 시 자동 포맷팅
+  "files.associations": {
+    "**/*.html": "html",
+    "**/*.js": "javascript",
+    "**/*.css": "css",
+    "**/templates/**/*.html": "django-html",
+    "**/templates/**/*": "django-txt",
+    "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+  },
+  "emmet.includeLanguages": {
+    "django-html": "html" // 장고 탬플릿에서도 Emment 사용 지원
+  },
+  "unibeautify.enabled": true, // UniBeautify 확장 활성화
+  "prettier.tabWidth": 2, // 탭 크기 설정
+  "prettier.singleQuote": false, // 쌍 따움표 사용 설정
+  "prettier.semi": true, // 세미콜론 사용 설정
+  "prettier.trailingComma": "all", // 후행 쉼표 설정
+  "prettier.bracketSpacing": true, // 객체 리터럴 내부의 중괄호 주위에 공백 추가 설정
+  "prettier.bracketSameLine": false, // 중괄호를 같은 줄에 배치
+  "prettier.arrowParens": "always", // 화살표 함수 파라미터에 항상 괄호 추가 설정
+  // 각 언어별 디폴트 포맷터 지정
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  // 장고 탬플릿에 prettier가 적용되지 않도록 한다 
+  "[django-html]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "Glavin001.unibeautify-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+}
