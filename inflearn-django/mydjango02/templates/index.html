@@ -1,45 +1,21 @@
-<!doctype html>
+<!-- bootstrap5 적용 -->
+<!-- <!doctype html>
 <html lang="ko">
 
   <head>
     <meta charset="UTF-8"/>
     <title>Melon List</title>
-    <style>
-      body {
-        width: 400px;
-        margin: 0 auto;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      table,
-      td,
-      th {
-        border: 1px solid black;
-      }
-
-      form {
-        margin-bottom: 10px;
-      }
-
-      form input {
-        width: 100%;
-      }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
   </head>
-
   <body>
+  <div class="container">
+    <h1 class="fw-bold">Melon List</h1>
 
-    <h1>Melon List</h1>
-
-    <form action="" method="get" autocomplete="off">
-      <input type="text" name="query" placeholder="검색어를 입력해주세요." autofocus="autofocus" value="{{ query }}">
+    <form action="" method="get" autocomplete="off" class="my-4">
+      <input type="text" name="query" placeholder="검색어를 입력해주세요." autofocus="autofocus" value="{{ query }}" class="form-control">
     </form>
 
-    <table>
+    <table class="table table-hover table-bordered">
       <thead>
         <tr>
           <th>곡명</th>
@@ -55,7 +31,46 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
+  </body>
 
+</html> -->
+
+
+<!-- tailwindcss 적용 -->
+<!doctype html>
+<html lang="ko">
+
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Melon List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+  <div class="container">
+    <h1 class="font-bold text-2xl">Melon List</h1>
+
+    <form action="" method="get" autocomplete="off" class="my-4">
+      <input type="text" name="query" placeholder="검색어를 입력해주세요." autofocus="autofocus" value="{{ query }}" class="w-full p-2 border rounded focus:outline-none focus:ring">
+    </form>
+
+    <table class="min-w-full bg-white border border-gray-300 divide-y divide-gray-300">
+      <thead>
+        <tr class="text-center">
+          <th class="py-2 px-4 border-b">곡명</th>
+          <th class="py-2 px-4 border-b">가수</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for song in song_list %}
+          <tr class="hover:bg-gray-200">
+            <td class="py-2 px-4">{{ song.곡명 }}</td>
+            <td class="py-2 px-4">{{ song.가수 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   </body>
 
 </html>
