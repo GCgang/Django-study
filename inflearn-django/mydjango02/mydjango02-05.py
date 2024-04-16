@@ -1,3 +1,6 @@
+# pip install "django~=4.2.0"
+# pip install requests
+
 import sys
 import django
 import requests
