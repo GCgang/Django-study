@@ -80,18 +80,12 @@
       <div class="album py-5 bg-body-tertiary">
         <div class="container">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col">
-              {% include "hottrack/_song.html" %}
-            </div>
-            <div class="col">
-              {% include "hottrack/_song.html" %}
-            </div>
-            <div class="col">
-              {% include "hottrack/_song.html" %}
-            </div>
-            <div class="col">
-              {% include "hottrack/_song.html" %}
-            </div>
+            {% for song in song_list %}
+              <div class="col">
+                {% comment %} 다른 템플릿을 인클루드할 때 밖에 정의된 값들을 그대로 사용할 수 있지만 명시적으로 with를 사용하여 사용할 값만 명시적으로 적어줌 {% endcomment %}
+                {% include "hottrack/_song.html" with song=song only%}
+              </div>
+            {% endfor %}
           </div>
         </div>
       </div>
