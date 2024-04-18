@@ -40,6 +40,12 @@ INSTALLED_APPS = [
     "hottrack",
 ]
 
+# 디버그 모드가 True 라면 debug_toolbar 앱 등록
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -49,6 +55,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# 디버그 모드가 True 라면 디버그 미들웨어 추가
+# 요청 처리시에 미들웨어 중에 가장 먼저 호출되고 응답 처리시에 미들웨어 중에 가장 늦게 호출 되도록 설정
+if DEBUG:
+    MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ] + MIDDLEWARE
 
 ROOT_URLCONF = "mysite.urls"
 
@@ -122,3 +135,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# django-debug-toolbar
+# DDT를 허용할 아이피 목록
+INTERNAL_IPS = ["127.0.0.1"]
