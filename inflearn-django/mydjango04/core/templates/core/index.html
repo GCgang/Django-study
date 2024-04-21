@@ -24,18 +24,22 @@
 <body>
 <div class="container">
     <h1>core</h1>
-    
-    {% if messages %}
+    {{ messages_list|json_script:"messages-list"}}
+
     <script>
-        {% for message in messages %}
-            Toastify({
-              text: "{{ message }}",
-              duration: 3000,
-              className: "alert-{{ message.level_tag }}",
-            }).showToast();
-        {% endfor %}
+        const jsonString = document.querySelector("#messages-list").textContent;
+        const messagesList = JSON.parse(jsonString);
+        console.log(messagesList);
+
+        messagesList.forEach(({ level_tag, message }) => {
+        Toastify({
+            text: message,
+            className: `alert-${level_tag}`,
+            duration: 3000,
+        }).showToast();
+        });
     </script>
-{% endif %}
+
 {% comment "Optional comment" %}
     {% include "core/_messages_as_toast.html" %}
 {% endcomment %}</div>
