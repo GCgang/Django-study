@@ -12,6 +12,7 @@ from django.views.generic import DetailView, ListView
 
 class IndexVeiw(ListView):
     model = Song
+    paginate_by = 10
     template_name="hottrack/index.html"
 
     def get_queryset(self):
