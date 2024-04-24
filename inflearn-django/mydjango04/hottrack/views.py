@@ -8,28 +8,50 @@ from io import BytesIO
 from typing import Literal
 from hottrack.models import Song
 from hottrack.utils.cover import make_cover_image
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
-# 타입을 지정하면 이상한 타입추론도 줄이고 보다 빠르고 정확하게 자동완성을 제공받을 수 있다
-def index(request: HttpRequest, release_date: datetime.date = None) -> HttpResponse:  # view 함수의 반환 타입은 HttpResponse
-    query = request.GET.get("query", "").strip()
+class IndexVeiw(ListView):
+    model = Song
+    template_name="hottrack/index.html"
 
-    song_qs: QuerySet = Song.objects.all()
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        release_date = self.kwargs.get("release_date")
+        if release_date:
+            qs = qs.filter(release_date=release_date)
+
+        query = self.request.GET.get("query", "").strip()
+        if query:
+            qs = qs.filter(
+                Q(name__icontains=query)
+                | Q(artist_name__icontains=query)
+                | Q(album_name__icontains=query)
+            )
+        return qs
     
-    if release_date:
-        song_qs = song_qs.filter(release_date=release_date)
+index = IndexVeiw.as_view()
 
-    if query:
-        song_qs = song_qs.filter(
-            Q(name__icontains=query)
-            | Q(artist_name__icontains=query)
-            | Q(album_name__icontains=query)
-        )
-    return render(
-        request=request,
-        template_name="hottrack/index.html",
-        context={"song_list": song_qs, "query": query},
-    )
+# # 타입을 지정하면 이상한 타입추론도 줄이고 보다 빠르고 정확하게 자동완성을 제공받을 수 있다
+# def index(request: HttpRequest, release_date: datetime.date = None) -> HttpResponse:  # view 함수의 반환 타입은 HttpResponse
+#     query = request.GET.get("query", "").strip()
+
+#     song_qs: QuerySet = Song.objects.all()
+    
+#     if release_date:
+#         song_qs = song_qs.filter(release_date=release_date)
+
+#     if query:
+#         song_qs = song_qs.filter(
+#             Q(name__icontains=query)
+#             | Q(artist_name__icontains=query)
+#             | Q(album_name__icontains=query)
+#         )
+#     return render(
+#         request=request,
+#         template_name="hottrack/index.html",
+#         context={"song_list": song_qs, "query": query},
+#     )
 
 # pk 인자와 slug 인자를 그대로 사용하고, melon_uid 인자를 추가로 사용
 class SongDetailView(DetailView):
