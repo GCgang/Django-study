@@ -31,13 +31,22 @@ def index(request: HttpRequest, release_date: datetime.date = None) -> HttpRespo
         context={"song_list": song_qs, "query": query},
     )
 
-song_detail = DetailView.as_view(
-    # 해당 뷰는 URL CapturedValues 중에서 pk 혹은 melon_uid 이름의 값만 지원하며, 
-    # slug 대신에 melon_uid를 사용하도록 설정했기 때문에, slug 값은 지원하지 않는다
-    model=Song,
-    slug_field="melon_uid",
-    slug_url_kwarg="melon_uid",
-    )
+# pk 인자와 slug 인자를 그대로 사용하고, melon_uid 인자를 추가로 사용
+class SongDetailView(DetailView):
+    model=Song
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        
+        melon_uid = self.kwargs.get("melon_uid")
+        if melon_uid:
+            return get_object_or_404(queryset, melon_uid=melon_uid)
+        
+        return super().get_object(queryset)
+
+song_detail = SongDetailView.as_view()
+
 
 def cover_png(request, pk):
     # 최댓값 512, 기본값 256
