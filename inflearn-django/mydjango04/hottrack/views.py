@@ -8,7 +8,7 @@ from io import BytesIO
 from typing import Literal
 from hottrack.models import Song
 from hottrack.utils.cover import make_cover_image
-
+from django.views.generic import DetailView
 
 # 타입을 지정하면 이상한 타입추론도 줄이고 보다 빠르고 정확하게 자동완성을 제공받을 수 있다
 def index(request: HttpRequest, release_date: datetime.date = None) -> HttpResponse:  # view 함수의 반환 타입은 HttpResponse
@@ -31,6 +31,7 @@ def index(request: HttpRequest, release_date: datetime.date = None) -> HttpRespo
         context={"song_list": song_qs, "query": query},
     )
 
+song_detail = DetailView.as_view(model=Song)
 
 def cover_png(request, pk):
     # 최댓값 512, 기본값 256

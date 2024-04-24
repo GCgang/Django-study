@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path(route="", view=views.index),
+    path(route="<int:pk>/", view=views.song_detail),
     path(route="archives/<date:release_date>/", view=views.index),
     path(route="<int:pk>/cover.png", view=views.cover_png),
     re_path(
