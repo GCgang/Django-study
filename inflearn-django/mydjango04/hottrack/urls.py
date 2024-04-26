@@ -41,10 +41,18 @@ urlpatterns = [
         view=views.SongArchiveIndexView.as_view(),
         name="song_archive_index",
     ),
-    path(
-        route="<int:year>/<int:month>/<int:day>/<int:pk>/",
-        view=views.SongDateDetailView.as_view(),
+    # path(
+    #     route="<int:year>/<int:month>/<int:day>/<int:pk>/",
+    #     view=views.SongDateDetailView.as_view(),
+    #     name="song_date_detail",
+    # ),
+    # year/month/day 조회 조건 + slug 조회
+    # 기본 slug converter는 ASCII 코드 만을 지원하고 유니코드를 지원하지 않는다.
+    # 유니코드 slug 지원을 위해 직접 정규표현식으로 패턴을 정의.
+    # django/core/validators.py 에 정의된 slug_unicode_re 패턴을 차용.
+    re_path(
+        r"^(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$",
+        views.SongDateDetailView.as_view(),
         name="song_date_detail",
     ),
-
 ]
