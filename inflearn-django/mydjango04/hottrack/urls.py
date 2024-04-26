@@ -26,4 +26,9 @@ urlpatterns = [
         view=views.SongDayArchiveView.as_view(),
         name="song_archive_day",
     ),
+    path(
+        route="archives/<int:year>/week/<int:week>/",
+        view=views.SongWeekArchiveView.as_view(),
+        name="song_archive_week",
+    ),
 ]

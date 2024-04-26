@@ -178,3 +178,19 @@ class SongDayArchiveView(DayArchiveView):
     # 1) 속성 (고정)
     # 2) URL Captured Value (가변)
     # 3) Query Parameter (가변)
+
+# 특정 해/주, 오늘 이하 범위에서 date_field 역순으로 쿼리셋을 생성한다
+# 해당 범위 데이터가 많다면 페이징 처리가 필요할 수 있다
+class SongWeekArchiveView(WeekArchiveView):
+    model = Song
+    date_field = "release_date"
+    # date_list_period = "week"
+    # 템플릿 필터 date의 "W" 포맷은 ISO 8601에 따라 한 주의 시작을 월요일로 간주한다.
+    #  - 템플릿 단에서 한 주의 시작을 일요일로 할려면 커스텀 템플릿 태그 구현이 필요하다.
+    week_format = "%W"  # "%U" (디폴트, 한 주의 시작을 일요일), %W (한 주의 시작을 월요일)
+
+    # 기준 year/week 조회 순서
+    # 1) 속성 (고정)
+    # 2) URL Captured Value (가변)
+    # 3) Query Parameter (가변)
+
