@@ -1,0 +1,61 @@
+{# hottrack/song_archive_year.html #}
+
+<!-- 템플릿 상속 문법
+여러 템플릿에 걸쳐 반복되는 HTML/CSS/JS 코드를 부모 템플릿 하나에 구현하고 자식 템플릿에서 상속받으면
+부모 템플릿의 모든 템플릿 코드를 그대로 이어 받는다 -->
+{% extends "hottrack/base.html" %}
+
+{% block content %}
+
+    <div class="p-3 d-flex gap-3">
+        <div>
+            <!-- 이전/다음 해 링크 -->
+            <h2>{{ year|date:"Y년" }}</h2>
+
+            <div class="text-center">
+                <div class="btn-group">
+                    {% if previous_year %}
+                        <a href="{% url 'song_archive_year' previous_year.year %}"
+                           class="btn btn-outline-primary">
+                            <!-- previous_year date 객체에서 년만 의미가 있다 -->
+                            {{ previous_year|date:"Y년" }}
+                        </a>
+                    {% endif %}
+                    {% if next_year %}
+                        <a href="{% url 'song_archive_year' next_year.year %}"
+                           class="btn btn-outline-primary">
+                            <!-- next_year date 객체에서 년만 의미가 있다 -->
+                            {{ next_year|date:"Y년" }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- 쿼리셋 순회. make_object_list=False를 지정하면 빈 쿼리셋이 참조 됨 -->
+            <ul>
+                {% for song in song_list %}
+                    <li>
+                        <!-- 노래 제목을 20글자만 노출 -->
+                        {{ song.name|truncatechars:20 }} 
+                        <small class="text-secondary fw-light">{{ song.release_date|date:"Y년 m월 d일" }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <h3>Nav</h3>
+            <ul>
+                {% for date in date_list %}
+                    <li>
+                        <!-- date 객체에서 년/월만 의미가 있다 -->
+                        {{ date|date:"Y년 m월" }}
+                        <!-- SongMonthArchiveView 구현이 되어있어야 동작 한다 -->
+                        <a href="{% url 'song_archive_month' date.year date.month %}">
+                            {{ date|date:"Y년 m월" }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

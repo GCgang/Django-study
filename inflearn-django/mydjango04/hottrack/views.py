@@ -8,7 +8,7 @@ from io import BytesIO
 from typing import Literal
 from hottrack.models import Song
 from hottrack.utils.cover import make_cover_image
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, YearArchiveView, MonthArchiveView, DayArchiveView, TodayArchiveView, WeekArchiveView, ArchiveIndexView, DateDetailView
 
 class IndexVeiw(ListView):
     model = Song
@@ -133,3 +133,21 @@ def export(request: HttpRequest, format: Literal["csv", "xlsx"]) -> HttpResponse
     response["Content-Disposition"] = "attachment; filename*=utf-8''{}".format(filename)
 
     return response
+
+
+# 특정 해, 오늘 이하 범위에서 date_field 역순으로 쿼리셋을 생성한다
+# 해당 범위 데이터가 많다면 페이징 처리가 필요할 수 있다
+class SongYearArchiveView(YearArchiveView):
+    model = Song
+    date_field = "release_date" # 조회한 날짜 필드
+
+    # 기준 년도 조회 순서
+    # 1) 속성 "year" (고정)
+    # 2) URL Captured Value "year" (가변)
+    # 3) Query Parameter "year" (가변)
+    year = None
+    
+    # YearArchiveView에만 있는 옵션
+    # 디폴트 : False (데이터가 있는 날짜 목록만을 제공하고 템플릿에 object_list 빈 쿼리셋을 제공)
+    make_object_list = True
+

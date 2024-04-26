@@ -11,4 +11,9 @@ urlpatterns = [
     re_path(
         route=r"^export\.(?P<format>(csv|xlsx))$", view=views.export, name="export"
     ),
+    re_path(
+        route=r"^archives/(?P<year>\d{4})/(?P<date_list_period>year|month|day|week)?/?$",
+        view=views.SongYearArchiveView.as_view(),
+        name="song_archive_year",
+    ),
 ]
