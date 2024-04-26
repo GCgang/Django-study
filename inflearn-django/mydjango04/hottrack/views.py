@@ -151,3 +151,17 @@ class SongYearArchiveView(YearArchiveView):
     # 디폴트 : False (데이터가 있는 날짜 목록만을 제공하고 템플릿에 object_list 빈 쿼리셋을 제공)
     make_object_list = True
 
+
+# 특정 해/월, 오늘 이하 범위에서 date_field 역순으로 쿼리셋을 생성한다
+# 해당 범위 데이터가 많다면 페이징 처리가 필요할 수 있다
+class SongMonthArchiveView(MonthArchiveView):
+    model = Song
+    date_field = "release_date"
+    # 날짜 포맷 : %m (숫자, ex: "01", "1" 등), %b (디폴트, 월 이름의 약어, ex: "Jan", "Feb" 등)
+    month_format = "%m"
+
+    # 기준 year/month 조회 순서
+    # 1) 속성 (고정)
+    # 2) URL Captured Value (가변)
+    # 3) Query Parameter (가변)
+
