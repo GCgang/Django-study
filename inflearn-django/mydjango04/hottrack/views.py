@@ -165,3 +165,16 @@ class SongMonthArchiveView(MonthArchiveView):
     # 2) URL Captured Value (가변)
     # 3) Query Parameter (가변)
 
+
+# 특정 해/월/일, 오늘 이하 범위에서 date_field 역순으로 쿼리셋을 생성한다
+# 해당 범위 데이터가 많다면 페이징 처리가 필요할 수 있다
+class SongDayArchiveView(DayArchiveView):
+    model = Song
+    date_field = "release_date"
+    month_format = "%m" # 숫자 포맷
+
+
+    # 기준 year/month/day 조회 순서
+    # 1) 속성 (고정)
+    # 2) URL Captured Value (가변)
+    # 3) Query Parameter (가변)
