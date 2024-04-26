@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 
+from django.conf import settings
 from django.db.models import QuerySet, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
@@ -231,3 +232,9 @@ class SongArchiveIndexView(ArchiveIndexView):
         context_data["date_list_period"] = self.get_date_list_period()
         return context_data
     
+
+# 디폴트 템플릿 : hottrack/song_detail.html
+class SongDateDetailView(DateDetailView):
+    model = Song
+    date_field = "release_date"
+    month_format = "%m"
