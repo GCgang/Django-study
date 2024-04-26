@@ -212,3 +212,22 @@ class SongWeekArchiveView(WeekArchiveView):
     # 2) URL Captured Value (가변)
     # 3) Query Parameter (가변)
 
+
+# date_field 역순으로 쿼리셋을 생성한다
+# date_list_period 에 지정한 단위로 date_list를 뽑는다
+class SongArchiveIndexView(ArchiveIndexView):
+    model = Song
+    date_field = "release_date" # 기준 날짜 필드
+    paginate_by = 10 # 전체 목록을 조회하기에 페이징 처리가 필수
+
+    # date_list_period = "year"
+    # 단위 : year(디폴트), month, day, week
+    def get_date_list_period(self):
+        # URL Captured Value에 date_list_period가 없으면, date_list_period 속성을 활용한다
+        return self.kwargs.get("date_list_period", self.date_list_period)
+    
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data["date_list_period"] = self.get_date_list_period()
+        return context_data
+    
