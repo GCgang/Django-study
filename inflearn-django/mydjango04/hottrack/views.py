@@ -179,6 +179,24 @@ class SongDayArchiveView(DayArchiveView):
     # 2) URL Captured Value (가변)
     # 3) Query Parameter (가변)
 
+class SongTodayArchiveView(TodayArchiveView):
+    model = Song
+    date_field = "release_date"
+
+    # Tip) DEBUG=True 에서만 get_dated_items 메서드를 재정의한다
+    # 오늘 날짜 데이터를 조회할 때, 테스트를 위해 가짜 오늘 날짜를 지원한다
+    if settings.DEBUG:
+        def get_dated_items(self):
+            """지정 날짜의 데이터를 조회"""
+            fake_today = self.request.GET.get("fake-today", "")
+            try:
+                year, month, day = map(int, fake_today.split("-", 3))
+                return self._get_dated_items(datetime.date(year, month, day))
+            except ValueError:
+                # fake_today 파라미터가 없거나 날짜 형식이 잘못된 경우
+                return super().get_dated_items()
+
+
 # 특정 해/주, 오늘 이하 범위에서 date_field 역순으로 쿼리셋을 생성한다
 # 해당 범위 데이터가 많다면 페이징 처리가 필요할 수 있다
 class SongWeekArchiveView(WeekArchiveView):
