@@ -13,7 +13,7 @@ from django.db import models
 
 class Song(models.Model):
     melon_uid = models.CharField(max_length=20, unique=True)
-    slug = models.SlugField(allow_unicode=True, blank=True) # 한글 지원을 위해 allow_unicode 옵션을 켜준다
+    slug = models.SlugField(max_length=100, allow_unicode=True, blank=True) # 한글 지원을 위해 allow_unicode 옵션을 켜준다
     rank = models.PositiveSmallIntegerField()
     album_name = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
@@ -39,6 +39,9 @@ class Song(models.Model):
     def slugify(self, force=False):
         if force or not self.slug:
             self.slug = slugify(self.name, allow_unicode=True)
+            # 현재 모델의 slug 필드의 max_length가 변할 수 있기 때문에 상수값 적지않고 아래와 같이 작성
+            slug_max_length = self._meta.get_field("slug").max_length
+            self.slug = self.slug[:slug_max_length]
 
     def get_absolute_url(self) -> str:
         return reverse(
@@ -64,7 +67,7 @@ class Song(models.Model):
 
     @classmethod
     def from_dict(cls, data: Dict) -> Song:
-        return cls(
+        isinstance = cls(
             melon_uid=data.get("곡일련번호"),
             rank=int(data.get("순위")),
             album_name=data.get("앨범"),
@@ -76,3 +79,5 @@ class Song(models.Model):
             release_date=date.fromisoformat(data.get("발매일")),
             like_count=int(data.get("좋아요")),
         )
+        isinstance.slugify()
+        return isinstance
