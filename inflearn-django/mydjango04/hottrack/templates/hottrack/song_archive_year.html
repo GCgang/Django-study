@@ -15,14 +15,14 @@
             <div class="text-center">
                 <div class="btn-group">
                     {% if previous_year %}
-                        <a href="{% url 'song_archive_year' previous_year.year %}"
+                        <a href="{% url 'hottrack:song_archive_year' previous_year.year %}"
                            class="btn btn-outline-primary">
                             <!-- previous_year date 객체에서 년만 의미가 있다 -->
                             {{ previous_year|date:"Y년" }}
                         </a>
                     {% endif %}
                     {% if next_year %}
-                        <a href="{% url 'song_archive_year' next_year.year %}"
+                        <a href="{% url 'hottrack:song_archive_year' next_year.year %}"
                            class="btn btn-outline-primary">
                             <!-- next_year date 객체에서 년만 의미가 있다 -->
                             {{ next_year|date:"Y년" }}
@@ -49,7 +49,7 @@
                         <!-- date 객체에서 년/월만 의미가 있다 -->
                         {{ date|date:"Y년 m월" }}
                         <!-- SongMonthArchiveView 구현이 되어있어야 동작 한다 -->
-                        <a href="{% url 'song_archive_month' date.year date.month %}">
+                        <a href="{% url 'hottrack:song_archive_month' date.year date.month %}">
                             {{ date|date:"Y년 m월" }}
                         </a>
                     </li>

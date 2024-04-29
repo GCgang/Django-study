@@ -42,7 +42,7 @@ class Song(models.Model):
 
     def get_absolute_url(self) -> str:
         return reverse(
-            viewname= "song_date_detail",
+            "hottrack:song_detail",
             args=[
                 self.release_date.year,
                 self.release_date.month,

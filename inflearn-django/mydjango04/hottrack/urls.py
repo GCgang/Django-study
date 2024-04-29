@@ -2,17 +2,17 @@ from django.urls import path, re_path
 from . import converters
 from . import views
 
+app_name = "hottrack"
 urlpatterns = [
-    path(route="", view=views.index),
-    path(route="<int:pk>/", view=views.song_detail),
-    path(route="melon-<int:melon_uid>/", view=views.song_detail),
-    # path(route="archives/<date:release_date>/", view=views.index), # DayArchiveView test 시 주석
-    path(route="<int:pk>/cover.png", view=views.cover_png),
+    path(route="", view=views.index, name="index"),
+    path(route="<int:pk>/", view=views.song_detail, name="song_detail"),
+    path(route="melon-<int:melon_uid>/", view=views.song_detail, name="song_detail"),
     re_path(
         route=r"^export\.(?P<format>(csv|xlsx))$", view=views.export, name="export"
     ),
-    re_path(
-        route=r"^archives/(?P<year>\d{4})/(?P<date_list_period>year|month|day|week)?/?$",
+    path(route="<int:pk>/cover.png", view=views.cover_png, name="cover_png"),
+    path(
+        route="archives/<int:year>/",
         view=views.SongYearArchiveView.as_view(),
         name="song_archive_year",
     ),
@@ -53,6 +53,6 @@ urlpatterns = [
     re_path(
         r"^(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/$",
         views.SongDateDetailView.as_view(),
-        name="song_date_detail",
+        name="song_detail",
     ),
 ]
